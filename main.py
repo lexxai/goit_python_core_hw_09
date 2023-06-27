@@ -10,13 +10,13 @@ def parse_input(command_line: str) -> tuple[str, list]:
 
 def input_error(func):
     def inner(*args):
-        print(" Before")
+        #print(" Before")
         try:
             res = func(*args)
         except Exception as e:
             print("**** Exception ",e)
         else:
-            print(" After")
+            #print(" After")
             return res
     return inner
 
