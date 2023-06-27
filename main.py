@@ -69,7 +69,7 @@ def handler_change(user=None, phone=None, *args) -> str:
 def handler_phone(user=None, *args) -> str:
 
     if user is None:
-        raise Exception('input', "user missed")
+        return "the user name is not entered"
 
     if user in user_data:
         return user_data.get(user)
@@ -87,8 +87,8 @@ def handler_show_all(*args) -> str:
     else:
         return "No users found, maybe you want to add them first?"
 
-# def handler_hello(*args) -> str:
-#     return "How can I help you?"
+def handler_hello(*args) -> str:
+    return "How can I help you?"
 
 def handler_help(*args) -> str:
     command = " ".join(args)
@@ -105,7 +105,7 @@ def handler_help(*args) -> str:
 
 COMMAND_EXIT=("good bye", "close", "exit")
 COMMANDS = {
-    "hello": lambda *args: "How can I help you?",
+    "hello": handler_hello,
     "add": handler_add,
     "change": handler_change,
     "phone": handler_phone ,
@@ -123,6 +123,16 @@ COMMANDS_HELP = {
     "close": "exit of bot" ,
     "good bye": "exit of bot"
 }
+
+COMMANDSF = {
+    handler_hello: "hello",
+    handler_add: "add" ,
+    handler_change: "change" ,
+    handler_phone : "phone"  ,
+    handler_show_all: "show all",
+    handler_help: "help"
+}
+
 user_data = {}
 
 def main():
