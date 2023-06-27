@@ -28,7 +28,7 @@ def input_error(func):
     return wrapper
 
 @input_error
-def handler_add(user=None, phone=None) -> str:
+def handler_add(user=None, phone=None, *args) -> str:
     #print("handler_add")
 
     if user is None:
@@ -126,9 +126,9 @@ COMMANDS_HELP = {
 
 COMMANDSF = {
     handler_hello: "hello",
-    handler_add: "add" ,
-    handler_change: "change" ,
-    handler_phone : "phone"  ,
+    handler_add: "add",
+    handler_change: "change",
+    handler_phone : "phone",
     handler_show_all: "show all",
     handler_help: "help"
 }
