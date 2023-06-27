@@ -14,7 +14,7 @@ def parse_input(command_line: str) -> tuple[str, list]:
     #     return command_line.lower(),[]
 
 def input_error(func):
-    def inner(*args):
+    def wrapper(*args):
         #print(" Before")
         try:
             res = func(*args)
@@ -25,7 +25,7 @@ def input_error(func):
         else:
             #print(" After")
             return res
-    return inner
+    return wrapper
 
 @input_error
 def handler_add(user=None, phone=None) -> str:
