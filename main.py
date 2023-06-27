@@ -13,8 +13,10 @@ def input_error(func):
         #print(" Before")
         try:
             res = func(*args)
+        except (KeyError, ValueError, IndexError)   as e:
+            print("**** Exception fix",e)
         except Exception as e:
-            print("**** Exception ",e)
+            print("**** Exception other",e)
         else:
             #print(" After")
             return res
