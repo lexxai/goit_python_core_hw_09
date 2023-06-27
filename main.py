@@ -9,10 +9,10 @@ def parse_input(command_line: str) -> tuple[str, list]:
         return command_line.lower(),[]
 
 def input_error(func):
-    def inner(user="", phone=""):
+    def inner(*args):
         print(" Before")
         try:
-            res = func(user, phone)
+            res = func(*args)
         except Exception as e:
             print("**** Exception ",e)
         else:
@@ -21,35 +21,43 @@ def input_error(func):
     return inner
 
 @input_error
-def handler_add(user, phone):
+def handler_add(user=None, phone=None):
     #print("handler_add")
-    if not user:
-         return "User is empty"
-    if not phone:
-         return "Phone is empty"
-    if user and user not in user_data:
+
+    if user is None:
+        raise Exception('input', "user missed")
+
+    if phone is None:
+        raise Exception('input', "phone missed")
+
+    if user not in user_data:
         user_data[user] = int(phone)
         return f"Phone of user ({user}) was added"
     else:
         return f"User ({user}) already present, maybe want to change ?"
 
 @input_error
-def handler_change(user, phone):
+def handler_change(user=None, phone=None):
     #print("handler_change")
-    if not user:
-         return "User is empty"
-    if not phone:
-         return "Phone is empty"
+
+    if user is None:
+        raise Exception('input', "user missed")
+
+    if phone is None:
+        raise Exception('input', "phone missed")
+
     if user in user_data:
         user_data[user] = int(phone)
         return f"Phone of user ({user}) was changed"
     else:
-         return f"User({user}) not found, maybe want to add it at first ?"
+        return f"User({user}) not found, maybe want to add it at first ?"
 
 @input_error
-def handler_phone(user, _=None):
-    if not user:
-         return "User is empty"
+def handler_phone(user=None):
+
+    if user is None:
+        raise Exception('input', "user missed")
+
     if user in user_data:
         return user_data.get(user)
     else:
@@ -57,7 +65,7 @@ def handler_phone(user, _=None):
 
 
 @input_error
-def show_all(_1=None,_2=None):
+def show_all():
     if len(user_data.keys()):
         result = []
         for user, phone in user_data.items():
