@@ -18,7 +18,11 @@ def input_error(func):
 @input_error
 def handler_add(user, phone):
     #print("handler_add")
-    if user not in user_data:
+    if not user:
+         return "User is empty"
+    if not phone:
+         return "Phone is empty"
+    if user and user not in user_data:
         user_data[user] = phone
         return f"Phone of user ({user}) was added"
     else:
@@ -27,6 +31,10 @@ def handler_add(user, phone):
 @input_error
 def handler_change(user, phone):
     #print("handler_change")
+    if not user:
+         return "User is empty"
+    if not phone:
+         return "Phone is empty"
     if user in user_data:
         user_data[user] = phone
         return f"Phone of user ({user}) was changed"
@@ -34,14 +42,16 @@ def handler_change(user, phone):
          return f"User({user}) not found, maybe want to add it at first ?"
 
 @input_error
-def handler_phone(user, _=""):
+def handler_phone(user, _=None):
+    if not user:
+         return "User is empty"
     if user in user_data:
         return user_data.get(user)
     else:
         return f"User({user}) not found, maybe want to add it at first ?"
 
 
-def show_all(_1="",_2=""):
+def show_all(_1=None,_2=None):
     if len(user_data.keys()):
         result = []
         for user, phone in user_data.items():
@@ -50,9 +60,12 @@ def show_all(_1="",_2=""):
     else:
         return "No users found, maybe you want to add them first?"
 
+def handler_hello():
+    return "How can I help you?"
 
 
 COMMANDS = {
+    "hello": handler_hello,
     "add": handler_add,
     "change": handler_change,
     "phone": handler_phone ,
@@ -60,7 +73,6 @@ COMMANDS = {
 
 def main():
     COMMAND_EXIT=("good bye", "close", "exit")
-    COMMAND_HELLO="hello"
     COMMAND_SHOW_ALL="show all"
     print("Bot init")
     while True:
@@ -69,8 +81,6 @@ def main():
         if command in COMMAND_EXIT:
             print("Good bye")
             break
-        elif command == COMMAND_HELLO:
-            print("How can I help you?")
         elif user_input.lower() == COMMAND_SHOW_ALL:
             print(show_all())
         else:
