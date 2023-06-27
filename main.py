@@ -91,13 +91,13 @@ def main():
     print("Bot init")
     while True:
         user_input = input("Enter your command:")
-        command, args = parse_input(user_input)
-        if command in COMMAND_EXIT:
+        if user_input.lower() in COMMAND_EXIT:
             print("Good bye")
             break
         elif user_input.lower() == COMMAND_SHOW_ALL:
             print(show_all())
         else:
+            command, args = parse_input(user_input)
             try:
                 result=COMMANDS[command](*args)
             except KeyError:
