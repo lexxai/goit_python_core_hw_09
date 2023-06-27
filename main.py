@@ -1,12 +1,17 @@
-user_data = {}
+
 
 
 def parse_input(command_line: str) -> tuple[str, list]:
-    pars = command_line.split()
-    if len(pars) > 1:
-        return pars[0].lower(), pars[1:]
-    else:
-        return command_line.lower(),[]
+    for command in COMMANDS:
+        if command_line.lower().startswith(command):
+            args = command_line.lstrip(command).strip().split(" ",2)
+            return command, args
+    return command_line.lower(),[]
+    # pars = command_line.split()
+    # if len(pars) > 1:
+    #     return pars[0].lower(), pars[1:]
+    # else:
+    #     return command_line.lower(),[]
 
 def input_error(func):
     def inner(*args):
@@ -23,7 +28,7 @@ def input_error(func):
     return inner
 
 @input_error
-def handler_add(user=None, phone=None):
+def handler_add(user=None, phone=None) -> str:
     #print("handler_add")
 
     if user is None:
@@ -31,6 +36,9 @@ def handler_add(user=None, phone=None):
 
     if phone is None:
         raise Exception('input', "phone missed")
+    
+    if not phone.isdecimal():
+        raise Exception('input', "phone is wrong")
 
     if user not in user_data:
         user_data[user] = int(phone)
@@ -39,7 +47,7 @@ def handler_add(user=None, phone=None):
         return f"User ({user}) already present, maybe want to change ?"
 
 @input_error
-def handler_change(user=None, phone=None):
+def handler_change(user=None, phone=None, *args) -> str:
     #print("handler_change")
 
     if user is None:
@@ -48,6 +56,9 @@ def handler_change(user=None, phone=None):
     if phone is None:
         raise Exception('input', "phone missed")
 
+    if not phone.isdecimal():
+        raise Exception('input', "phone is wrong")
+
     if user in user_data:
         user_data[user] = int(phone)
         return f"Phone of user ({user}) was changed"
@@ -55,7 +66,7 @@ def handler_change(user=None, phone=None):
         return f"User({user}) not found, maybe want to add it at first ?"
 
 @input_error
-def handler_phone(user=None):
+def handler_phone(user=None, *args) -> str:
 
     if user is None:
         raise Exception('input', "user missed")
@@ -67,7 +78,7 @@ def handler_phone(user=None):
 
 
 @input_error
-def show_all():
+def handler_show_all(*args) -> str:
     if len(user_data.keys()):
         result = []
         for user, phone in user_data.items():
@@ -76,30 +87,54 @@ def show_all():
     else:
         return "No users found, maybe you want to add them first?"
 
-def handler_hello():
-    return "How can I help you?"
+# def handler_hello(*args) -> str:
+#     return "How can I help you?"
+
+def handler_help(*args) -> str:
+    command = " ".join(args)
+    if not command:
+        commands = [i for i in COMMANDS.keys()]
+        commands.extend(COMMAND_EXIT)
+        return "List of commands: " + ", ".join(commands)
+    else:
+        if command in COMMANDS_HELP:
+            return COMMANDS_HELP[command]
+        else:
+            return f"Help of this command '{command}' not ready yet"
 
 
+COMMAND_EXIT=("good bye", "close", "exit")
 COMMANDS = {
-    "hello": lambda: "How can I help you?",
+    "hello": lambda *args: "How can I help you?",
     "add": handler_add,
     "change": handler_change,
     "phone": handler_phone ,
+    "show all": handler_show_all,
+    "help": handler_help
 }
+COMMANDS_HELP = {
+    "hello": "Just hello",
+    "add": "add user and phone",
+    "change": "change user's phone",
+    "phone": "show user's phone" ,
+    "show all": "show all user's phone",
+    "help": "List of commands  and their description",
+    "exit": "exit of bot",
+    "close": "exit of bot" ,
+    "good bye": "exit of bot"
+}
+user_data = {}
 
 def main():
-    COMMAND_EXIT=("good bye", "close", "exit")
-    COMMAND_SHOW_ALL="show all"
     print("Bot init")
     while True:
         user_input = input("Enter your command:")
         if user_input.lower() in COMMAND_EXIT:
             print("Good bye")
             break
-        elif user_input.lower() == COMMAND_SHOW_ALL:
-            print(show_all())
         else:
             command, args = parse_input(user_input)
+            #print(command, args)
             try:
                 result=COMMANDS[command](*args)
             except KeyError:
