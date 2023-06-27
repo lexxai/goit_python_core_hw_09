@@ -9,9 +9,9 @@ List of commands: hello, add, change, phone, show all, help, good bye, close, ex
 Enter your command:help add
 add user and phone
 Enter your command:add Jon
-**** Exception other ('input', 'phone missed')
+user phone number is not entered
 Enter your command:add Jon 54545d
-**** Exception other ('input', 'phone is wrong')
+the user's phone number is entered incorrectly
 Enter your command:add Jon 5454
 Phone of user (Jon) was added
 Enter your command:add Jon 5454
