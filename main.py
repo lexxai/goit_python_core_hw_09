@@ -32,16 +32,16 @@ def handler_add(user=None, phone=None) -> str:
     #print("handler_add")
 
     if user is None:
-        raise Exception('input', "user missed")
+        return "the user name is not entered"
 
     if phone is None:
-        raise Exception('input', "phone missed")
+        return "user phone number is not entered"
     
     if not phone.isdecimal():
-        raise Exception('input', "phone is wrong")
+        return "the user's phone number is entered incorrectly"
 
     if user not in user_data:
-        user_data[user] = int(phone)
+        user_data[user] = phone
         return f"Phone of user ({user}) was added"
     else:
         return f"User ({user}) already present, maybe want to change ?"
@@ -51,16 +51,16 @@ def handler_change(user=None, phone=None, *args) -> str:
     #print("handler_change")
 
     if user is None:
-        raise Exception('input', "user missed")
+        return "the user name is not entered"
 
     if phone is None:
-        raise Exception('input', "phone missed")
-
+        return "user phone number is not entered"
+    
     if not phone.isdecimal():
-        raise Exception('input', "phone is wrong")
+        return "the user's phone number is entered incorrectly"
 
     if user in user_data:
-        user_data[user] = int(phone)
+        user_data[user] = phone
         return f"Phone of user ({user}) was changed"
     else:
         return f"User({user}) not found, maybe want to add it at first ?"
