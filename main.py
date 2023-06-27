@@ -11,8 +11,13 @@ def parse_input(command_line: str) -> tuple[str, list]:
 def input_error(func):
     def inner(user="", phone=""):
         print(" Before")
-        print(func(user, phone))
-        print(" After")
+        try:
+            res = func(user, phone)
+        except Exception as e:
+            print("**** Exception ",e)
+        else:
+            print(" After")
+            return res
     return inner
 
 @input_error
@@ -23,7 +28,7 @@ def handler_add(user, phone):
     if not phone:
          return "Phone is empty"
     if user and user not in user_data:
-        user_data[user] = phone
+        user_data[user] = int(phone)
         return f"Phone of user ({user}) was added"
     else:
         return f"User ({user}) already present, maybe want to change ?"
@@ -36,7 +41,7 @@ def handler_change(user, phone):
     if not phone:
          return "Phone is empty"
     if user in user_data:
-        user_data[user] = phone
+        user_data[user] = int(phone)
         return f"Phone of user ({user}) was changed"
     else:
          return f"User({user}) not found, maybe want to add it at first ?"
@@ -51,6 +56,7 @@ def handler_phone(user, _=None):
         return f"User({user}) not found, maybe want to add it at first ?"
 
 
+@input_error
 def show_all(_1=None,_2=None):
     if len(user_data.keys()):
         result = []
