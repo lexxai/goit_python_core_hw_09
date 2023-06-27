@@ -81,7 +81,7 @@ def handler_hello():
 
 
 COMMANDS = {
-    "hello": handler_hello,
+    "hello": lambda: "How can I help you?",
     "add": handler_add,
     "change": handler_change,
     "phone": handler_phone ,
