@@ -1,6 +1,5 @@
 
 
-
 def parse_input(command_line: str) -> tuple[str, list]:
     for command in COMMANDS:
         if command_line.lower().startswith(command):
