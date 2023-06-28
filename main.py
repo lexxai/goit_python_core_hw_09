@@ -24,64 +24,25 @@ def input_error(func):
 
 @input_error
 def handler_add(*args) -> str:
-    #print("handler_add")
     user = args[0]
     phone = args[1]
     user_data[user] = phone
     return "Done"
 
-    # if user is None:
-    #     return "the user name is not entered"
-
-    # if phone is None:
-    #     return "user phone number is not entered"
-    
-    # if not phone.isdecimal():
-    #     return "the user's phone number is entered incorrectly"
-
-    # if user not in user_data:
-    #     user_data[user] = phone
-    #     return f"Phone of user ({user}) was added"
-    # else:
-    #     return f"User ({user}) already present, maybe want to change ?"
 
 @input_error
 def handler_change(*args) -> str:
-    #print("handler_change")
     user = args[0]
     user_data[user]
     phone = args[1]
     user_data[user] = phone
     return "Done"
 
-    # if user is None:
-    #     return "the user name is not entered"
-
-    # if phone is None:
-    #     return "user phone number is not entered"
-    
-    # if not phone.isdecimal():
-    #     return "the user's phone number is entered incorrectly"
-
-    # if user in user_data:
-    #     user_data[user] = phone
-    #     return f"Phone of user ({user}) was changed"
-    # else:
-    #     return f"User({user}) not found, maybe want to add it at first ?"
 
 @input_error
 def handler_phone(*args) -> str:
     user = args[0]
     return user_data[user]
-
-    # if user is None:
-    #     return "the user name is not entered"
-
-    # if user in user_data:
-    #     return user_data.get(user)
-    # else:
-    #     return f"User({user}) not found, maybe want to add it at first ?"
-
 
 
 def handler_show_all(*args) -> str:
@@ -93,8 +54,10 @@ def handler_show_all(*args) -> str:
     else:
         return "No users found, maybe you want to add them first?"
 
+
 def handler_hello(*args) -> str:
     return "How can I help you?"
+
 
 def handler_help(*args) -> str:
     command = " ".join(args)
@@ -110,6 +73,7 @@ def handler_help(*args) -> str:
 
 
 COMMAND_EXIT=("good bye", "close", "exit")
+
 COMMANDS = {
     "hello": handler_hello,
     "add": handler_add,
@@ -118,10 +82,7 @@ COMMANDS = {
     "show all": handler_show_all,
     "help": handler_help
 }
-FUNCTIONS_ARGS = {
-    "default": 2,
-    "handler_phone": 1
-}
+
 COMMANDS_HELP = {
     "hello": "Just hello",
     "add": "Add user and phone. Required username and phone.",
@@ -134,15 +95,6 @@ COMMANDS_HELP = {
     "good bye": "Exit of bot."
 }
 
-COMMANDSF = {
-    handler_hello: "hello",
-    handler_add: "add",
-    handler_change: "change",
-    handler_phone : "phone",
-    handler_show_all: "show all",
-    handler_help: "help"
-}
-
 user_data = {}
 
 def main():
@@ -151,23 +103,20 @@ def main():
         try:
             user_input = input("Enter your command:")
         except KeyboardInterrupt:
-            print("\nGood bye")
             break
         if user_input.lower() in COMMAND_EXIT:
-            print("Good bye")
             break
         else:
             command, args = parse_input(user_input)
-            #print(command, args)
             try:
                 result=COMMANDS[command](*args)
             except KeyError:
-                 print("Your command is not recognized, try to enter other command")
+                 print("Your command is not recognized, try to enter other command. "
+                       "To get a list of all commands, you can use the 'help' command")
             else:
                 if result:
                     print(result)
-
-        #print("user_data",user_data)
+    print("\nGood bye")
 
 if __name__ == "__main__":
     main()
