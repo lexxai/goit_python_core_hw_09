@@ -13,12 +13,13 @@ def parse_input(command_line: str) -> tuple[str, list]:
 def input_error(func):
     def wrapper(*args):
 
-        parameters = FUNCTIONS_ARGS.get(func.__name__,FUNCTIONS_ARGS["default"])   
+        #parameters = FUNCTIONS_ARGS.get(func.__name__,FUNCTIONS_ARGS["default"])   
 
         #print(" Before ",func.__name__,args,len(args),parameters)
 
-        if not args[0] or (len(args) < parameters):
-            return "Sorry, not enough parameters. Use help for more information."
+        # if not args[0] or (len(args) < parameters):
+        #     return "Sorry, not enough parameters. Use help for more information."
+
         try:
             res = func(*args)
         except (KeyError, ValueError, IndexError):
@@ -32,8 +33,10 @@ def input_error(func):
 
 
 @input_error
-def handler_add(user=None, phone=None, *args) -> str:
+def handler_add(*args) -> str:
     #print("handler_add")
+    user = args[0]
+    phone = args[1]
     user_data[user] = phone
     return "Done"
 
@@ -53,9 +56,11 @@ def handler_add(user=None, phone=None, *args) -> str:
     #     return f"User ({user}) already present, maybe want to change ?"
 
 @input_error
-def handler_change(user=None, phone=None, *args) -> str:
+def handler_change(*args) -> str:
     #print("handler_change")
+    user = args[0]
     user_data[user]
+    phone = args[1]
     user_data[user] = phone
     return "Done"
 
@@ -75,8 +80,8 @@ def handler_change(user=None, phone=None, *args) -> str:
     #     return f"User({user}) not found, maybe want to add it at first ?"
 
 @input_error
-def handler_phone(user=None, *args) -> str:
-
+def handler_phone(*args) -> str:
+    user = args[0]
     return user_data[user]
 
     # if user is None:
