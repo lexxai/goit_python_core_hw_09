@@ -102,6 +102,7 @@ def main():
         try:
             user_input = input("Enter your command:")
         except KeyboardInterrupt:
+            print("\r")
             break
         if user_input.lower() in COMMAND_EXIT:
             break
@@ -115,7 +116,7 @@ def main():
             else:
                 if result:
                     print(result)
-    print("\nGood bye")
+    print("Good bye")
 
 if __name__ == "__main__":
     main()
