@@ -12,23 +12,13 @@ def parse_input(command_line: str) -> tuple[str, list]:
 
 def input_error(func):
     def wrapper(*args):
-
-        #parameters = FUNCTIONS_ARGS.get(func.__name__,FUNCTIONS_ARGS["default"])   
-
-        #print(" Before ",func.__name__,args,len(args),parameters)
-
-        # if not args[0] or (len(args) < parameters):
-        #     return "Sorry, not enough parameters. Use help for more information."
-
         try:
-            res = func(*args)
+            return func(*args)
         except (KeyError, ValueError, IndexError):
-            return "Sorry, the settings may be incorrect. Please use the help for more information."
+            return "Sorry, there are not enough parameters or their value may be incorrect. "\
+                   "Please use the help for more information."
         except Exception as e:
             return "**** Exception other" + e
-        else:
-            #print(" After")
-            return res
     return wrapper    
 
 
@@ -158,7 +148,11 @@ user_data = {}
 def main():
     print("Bot init")
     while True:
-        user_input = input("Enter your command:")
+        try:
+            user_input = input("Enter your command:")
+        except KeyboardInterrupt:
+            print("\nGood bye")
+            break
         if user_input.lower() in COMMAND_EXIT:
             print("Good bye")
             break
