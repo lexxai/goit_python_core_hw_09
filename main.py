@@ -1,4 +1,4 @@
-
+from functools import wraps
 
 def parse_input(command_line: str) -> tuple[str, list]:
     for command in COMMANDS:
@@ -10,9 +10,10 @@ def parse_input(command_line: str) -> tuple[str, list]:
 
 
 def input_error(func):
-    def wrapper(*args):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
         try:
-            return func(*args)
+            return func(*args, **kwargs)
         except (KeyError, ValueError, IndexError):
             return "Sorry, there are not enough parameters or their value may be incorrect. "\
                    "Please use the help for more information."
@@ -61,14 +62,11 @@ def handler_hello(*args) -> str:
 def handler_help(*args) -> str:
     command = " ".join(args)
     if not command:
-        commands = [i for i in COMMANDS.keys()]
+        commands = list(COMMANDS.keys())
         commands.extend(COMMAND_EXIT)
         return "List of commands: " + ", ".join(commands)
     else:
-        if command in COMMANDS_HELP:
-            return COMMANDS_HELP[command]
-        else:
-            return f"Help of this command '{command}' not ready yet"
+        return COMMANDS_HELP.get(command,  f"Help for this command '{command}' is not yet available")
 
 
 COMMAND_EXIT=("good bye", "close", "exit")
