@@ -3,10 +3,10 @@ from functools import wraps
 def parse_input(command_line: str) -> tuple[str, list]:
     for command in COMMANDS:
         if command_line.lower().startswith(command):
-            args = command_line.lstrip(command).strip().split(" ",1)
+            args = command_line[len(command):].strip().split(" ")
             args = (s.strip() for s in args)
             return command, args
-    return command_line.lower(),()
+    return command_line.lower(),[]
 
 
 def input_error(func):
